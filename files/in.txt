@@ -1,0 +1,45 @@
+main:
+	lui $s0, 0x1000
+	ori $s0, $s0, 0xF000
+	slt $a1, $s0, $s2
+	sra $a2, $a1, 3
+#comentario
+	lw $a0, 0($s0)
+	lw $a1, 4($s0)
+	addi $sp, $sp, -4
+	sw $ra, 0xABCD($sp)
+	jal factorial
+	sw $v0, 12($sp)
+	mult $v0, $a1
+	mflo $t1
+	add $s1, $t1, $a0
+	sw $s1, 8($s0)
+	lw $ra, 0($sp)
+	addi $sp, $sp, 4
+	add $s1, $s3, $s4
+	sub $s2, $s3, $s6
+	and $t1, $t2, $v1
+	andi $t2, $t1, 7
+	j main
+	jr $ra	
+factorial:
+	addi $sp, $sp, -6
+	sw $a0, 4($sp)
+	sw $ra, 0($sp)
+	slti $t0, $a0, 2
+	beq $t0, $0, else 
+	addi $v0, $0, 1
+	addi $sp, $sp, 8
+	jr $ra
+	sll $s0, $t0, 2
+else:
+	addi $a0, $a0, -1
+	jal factorial
+	lw $ra, 0($sp)
+	lw $a0, 4($sp)
+	addi $sp, $sp, 8
+	mult $v0, $a0
+	mflo $v0
+	bne $t0, $0, main
+	jr $ra
+	sub $s0, $s1, $s2
